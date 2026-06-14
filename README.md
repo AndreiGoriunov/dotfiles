@@ -33,7 +33,7 @@ Link platform-specific config:
 # macOS
 stow --target "$HOME" aerospace
 
-# Windows
+# Windows: run Stow from WSL
 stow --target "$HOME" glazewm
 ```
 
@@ -103,4 +103,6 @@ with another.
 
 - Do not install `aerospace` on Windows.
 - Do not install `glazewm` on macOS.
+- On Windows, call `stow` from WSL. Keep this repo and the target files on the
+  Windows filesystem, not inside the WSL Linux home.
 - If Stow reports conflicts, move or back up the existing target files first.
