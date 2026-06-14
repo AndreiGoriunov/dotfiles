@@ -119,8 +119,20 @@ outer.right = 0
 # end tell'
 # '''
 
+alt-shift-q = '''exec-and-forget osascript -e '
+tell application "System Events"
+    set frontApp to name of first application process whose frontmost is true
+
+    if frontApp is not "Finder" then
+        set visible of application process frontApp to false
+        tell application frontApp to quit
+    end if
+end tell
+'
+'''
+
 # See: https://nikitabobko.github.io/AeroSpace/commands#layout
-alt-slash = 'layout tiles horizontal'
+# alt-slash = 'layout tiles horizontal'
 # alt-comma = 'layout accordion horizontal vertical'
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#focus
@@ -183,7 +195,7 @@ alt-shift-r = 'reload-config'
 alt-shift-f = 'flatten-workspace-tree'              # reset layout
 alt-t = 'layout floating tiling'                    # Toggle between floating and tiling layout
 alt-shift-p = 'enable toggle'
-alt-shift-s = 'exec-and-forget screencapture -i -c'
+# alt-shift-s = 'exec-and-forget screencapture -i -c'
 # backspace = ['close-all-windows-but-current', 'mode main']
 
 # Move application to specific workspace

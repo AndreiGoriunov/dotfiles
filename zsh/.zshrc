@@ -4,6 +4,38 @@
 # Path to your Oh My Zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
 
+brew() {
+  if [[ "$1" == "upgrade" ]]; then
+    local protected=("aerospace" "mos")
+    local outdated
+    local has_warning=false
+
+    # Collect outdated formulae and casks
+    outdated="$(
+      command brew outdated --quiet
+      command brew outdated --cask --quiet
+    )"
+
+    for app in "${protected[@]}"; do
+      if echo "$outdated" | grep -Fxi "$app" >/dev/null; then
+        echo "⚠️  Warning: '$app' has an available update via Homebrew."
+        has_warning=true
+      fi
+    done
+
+    if [[ "$has_warning" == true ]]; then
+      echo
+      read "reply?Continue with brew upgrade? [y/N] "
+      if [[ ! "$reply" =~ ^[Yy]$ ]]; then
+        echo "Cancelled."
+        return 1
+      fi
+    fi
+  fi
+
+  command brew "$@"
+}
+
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time Oh My Zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
@@ -101,7 +133,8 @@ source $ZSH/oh-my-zsh.sh
 #
 # Example aliases
 alias zshrc="code ~/.zshrc"
-alias ohmyzsh="code ~/.oh-my-zsh"
+alias ohmyzsh="code $ZSH_CUSTOM"
 alias aspace="code ~/.config/aerospace/aerospace.toml"
+alias caf='caffeinate -dimsu'
 eval "$(uv generate-shell-completion zsh)"
 eval "$(mise activate zsh)"
