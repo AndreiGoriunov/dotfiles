@@ -1,12 +1,7 @@
-#
-# Browser hotkeys:
-# - alt+shift+b focuses or launches the browser in GLAZEWM_BROWSER.
-# - Set GLAZEWM_BROWSER to "chrome" or "brave"; unset defaults to "chrome".
-# - Optional overrides: GLAZEWM_BROWSER_PROCESS and GLAZEWM_BROWSER_PATH.
-#
 general:
   # Commands to run when the WM has started. This is useful for running a
   # script or launching another application.
+  # Example: The below command launches Zebar.
   startup_commands:
     [
       "shell-exec zebar",
@@ -157,7 +152,6 @@ window_rules:
       # Ignores any Zebar windows.
       - window_process: { equals: "zebar" }
       - window_process: { equals: "tacky-borders" }
-      - window_class: { regex: "tacky-borders" }
 
       # Ignores picture-in-picture windows for browsers.
       - window_title: { regex: "[Pp]icture.in.[Pp]icture" }
@@ -170,16 +164,9 @@ window_rules:
         window_title: { regex: ".*? - Peek" }
       - window_process: { equals: "Lively" }
         window_class: { regex: "HwndWrapper" }
-      - window_title: { regex: ".*Palette.*|Command Palette" }
-      - window_process: { equals: "mstsc" } # Ignore remote app
-      - window_title: { regex: ".*Windows 11 - Desktop.*" }
-        window_process: { equals: "Citrix.DesktopViewer.App.exe" }
-      - window_title: { equals: "Citrix Workspace" }
-        window_process: { equals: "SelfService.exe" }
-      - window_title: { equals: "Sticky Notes" }
-      - window_process: { equals: "OUTLOOK" }
-        window_title: { regex: '\d+ Reminder\(s\)' }
+      - window_title: { regex: "Command Palette" }
       # - window_title: { regex: ".* - VLC media player" }
+      - window_title: { equals: "Reus Auto" }
 
   - commands: ["set-floating"]
     match:
@@ -193,54 +180,14 @@ window_rules:
       - window_process: { equals: "explorer" }
       - window_title: { equals: "Task Manager" }
         window_process: { equals: "Taskmgr" }
-      - window_title: { equals: "EY Object Spy" }
-      - window_title: { equals: "Reus Auto" }
 
-  # === 1 ===
-  - commands: ["move --workspace 1", "focus --workspace 1"]
-    match:
-      - window_title: { regex: ".*[mM]icrosoft [tT]eams.*" }
-      - window_process: { equals: "ms-teams" }
-
-  # === 2 ===
   - commands: ["move --workspace 2", "focus --workspace 2"]
     match:
       - window_process: { regex: "msedge|brave|chrome|thorium|firefox" }
 
-  # === 3 ===
-  - commands: ["move --workspace 3", "focus --workspace 3"]
-    match:
-      - window_process: { equals: "code" }
-      - window_process: { equals: "idea64" }
-      - window_process: { equals: "pycharm64" }
-
-  # === 4 ===
   - commands: ["move --workspace 4"]
     match:
-      - window_process: { regex: "SD WebUI" }
-      - window_process: { regex: "Discord" }
-
-  # === 5 ===
-  - commands: ["move --workspace 5", "focus --workspace 5"]
-    match:
-      - window_process: { equals: "OUTLOOK" }
-
-  # === 6 ===
-  - commands: ["move --workspace 6", "focus --workspace 6"]
-    match:
-      - window_process: { equals: "Zoom" }
-      - window_title: { equals: "Microsoft 365 Copilot" }
-
-  # === 9 ===
-  - commands: ["move --workspace 9"]
-    match:
-      - window_title: { equals: "Windows App" }
-      - window_title: { equals: "PRD-AMER-DEV-QA" }
-
-  - commands: ["set-tiling"]
-    match:
-      - window_title: { equals: "PRD-AMER-DEV-QA" }
-      - window_title: { equals: "Microsoft 365 Copilot" }
+      - window_process: { regex: "SD WebUI|Discord" }
 
 binding_modes:
   # When enabled, the focused window can be resized via arrow keys or HJKL.
@@ -356,13 +303,6 @@ keybindings:
   # Redraw all windows.
   - commands: ["wm-redraw"]
     bindings: ["alt+shift+w"]
-
-  # Focus the configured browser, or launch it when no window is open.
-  - commands:
-      [
-        'shell-exec powershell -windowstyle hidden -command "$browser = if ($env:GLAZEWM_BROWSER) { $env:GLAZEWM_BROWSER.ToLowerInvariant() } else { \"chrome\" }; $browserMap = @{ chrome = @{ Process = \"chrome\"; Path = \"C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe\" }; brave = @{ Process = \"brave\"; Path = \"C:\\Program Files\\BraveSoftware\\Brave-Browser\\Application\\brave.exe\" } }; $config = if ($browserMap.ContainsKey($browser)) { $browserMap[$browser] } else { $browserMap.chrome }; $processName = if ($env:GLAZEWM_BROWSER_PROCESS) { $env:GLAZEWM_BROWSER_PROCESS } else { $config.Process }; $browserPath = if ($env:GLAZEWM_BROWSER_PATH) { $env:GLAZEWM_BROWSER_PATH } else { $config.Path }; $browserProcess = Get-Process -Name $processName -ErrorAction SilentlyContinue | Where-Object { $_.MainWindowHandle -ne 0 } | Select-Object -First 1; if ($browserProcess) { (New-Object -ComObject wscript.shell).AppActivate($browserProcess.Id) } else { Start-Process $browserPath }"',
-      ]
-    bindings: ["alt+shift+b"]
 
   # Launch CMD terminal. Alternatively, use `shell-exec wt` or
   # `shell-exec %ProgramFiles%/Git/git-bash.exe` to start Windows
