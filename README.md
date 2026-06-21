@@ -32,9 +32,20 @@ Link platform-specific config:
 ```sh
 # macOS
 stow --target "$HOME" aerospace
+```
 
-# Windows: run Stow from WSL
-stow --target "$HOME" glazewm
+For Windows GlazeWM, use the PowerShell Stow helper so links are visible to
+Windows apps:
+
+```powershell
+.\stow-win.ps1 --simulate --verbose --target "$HOME" glazewm
+.\stow-win.ps1 --target "$HOME" glazewm
+```
+
+From another directory, pass the repo path explicitly:
+
+```powershell
+D:\dev\dotfiles\stow-win.ps1 --dir "D:\dev\dotfiles" --target "$HOME" glazewm
 ```
 
 ## Check Existing Links
@@ -56,14 +67,13 @@ Check the actual symlink target directly:
 ```sh
 ls -l "$HOME/.zshrc"
 ls -l "$HOME/.config/aerospace/aerospace.toml"
-ls -ld "$HOME/.glzr"
 ```
 
 On PowerShell, use:
 
 ```powershell
 Get-Item "$HOME/.zshrc"
-Get-Item "$HOME/.glzr"
+Get-Item "$HOME\.glzr" | Format-List FullName,LinkType,Target
 ```
 
 ## Unlink
@@ -71,38 +81,40 @@ Get-Item "$HOME/.glzr"
 ```sh
 stow --target "$HOME" -D zsh codex
 stow --target "$HOME" -D aerospace
-stow --target "$HOME" -D glazewm
+```
+
+Remove the Windows GlazeWM junction from PowerShell:
+
+```powershell
+.\stow-win.ps1 --target "$HOME" -D glazewm
 ```
 
 ## GlazeWM Profiles
 
-If work and personal Windows machines need different GlazeWM configs, split them
-into separate packages:
+Keep GlazeWM configs in one package under `.glzr/glazewm/`, such as:
 
 ```text
-glazewm-common/
-glazewm-work/
-glazewm-personal/
+config.yaml
+config-work.yaml
+config-personal.yaml
+merged.yaml
 ```
 
-Then install only the matching profile:
+Use `GLAZEWM_CONFIG_PATH` to choose the default config:
 
-```sh
-# Work Windows machine
-stow --target "$HOME" glazewm-common glazewm-work
-
-# Personal Windows machine
-stow --target "$HOME" glazewm-common glazewm-personal
+```powershell
+[Environment]::SetEnvironmentVariable("GLAZEWM_CONFIG_PATH", "$HOME\.glzr\glazewm\config-work.yaml", "User")
 ```
 
-Do not let two packages contain the same target file, such as
-`.glzr/glazewm/config.yaml`, unless you are intentionally replacing one profile
-with another.
+Restart GlazeWM after changing the environment variable. To test a config
+without changing the default, pass it at startup:
+
+```powershell
+glazewm.exe start --config="C:\path\to\config-work.yaml"
+```
 
 ## Notes
 
 - Do not install `aerospace` on Windows.
 - Do not install `glazewm` on macOS.
-- On Windows, call `stow` from WSL. Keep this repo and the target files on the
-  Windows filesystem, not inside the WSL Linux home.
 - If Stow reports conflicts, move or back up the existing target files first.
