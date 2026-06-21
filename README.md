@@ -34,7 +34,7 @@ Link platform-specific config:
 stow --target "$HOME" aerospace
 ```
 
-For Windows GlazeWM, use the PowerShell Stow helper so links are visible to
+For **Windows** GlazeWM, use the PowerShell Stow helper so links are visible to
 Windows apps:
 
 ```powershell
@@ -78,12 +78,14 @@ Get-Item "$HOME\.glzr" | Format-List FullName,LinkType,Target
 
 ## Unlink
 
+**Linux/MacOS:**
+
 ```sh
 stow --target "$HOME" -D zsh codex
 stow --target "$HOME" -D aerospace
 ```
 
-Remove the Windows GlazeWM junction from PowerShell:
+**Windows (Powershell):**
 
 ```powershell
 .\stow-win.ps1 --target "$HOME" -D glazewm
@@ -97,7 +99,6 @@ Keep GlazeWM configs in one package under `.glzr/glazewm/`, such as:
 config.yaml
 config-work.yaml
 config-personal.yaml
-merged.yaml
 ```
 
 Use `GLAZEWM_CONFIG_PATH` to choose the default config:
