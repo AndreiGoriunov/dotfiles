@@ -10,7 +10,7 @@ general:
   startup_commands:
     [
       "shell-exec zebar",
-      'shell-exec D:\Programs\tacky-borders-v1.1.0\tacky-borders.exe',
+      'shell-exec %USERPROFILE%/apps/tacky-borders/tacky-borders.exe',
       "focus --workspace 1",
     ]
 
@@ -220,6 +220,7 @@ window_rules:
     match:
       - window_process: { regex: "SD WebUI" }
       - window_process: { regex: "Discord" }
+      - window_process: { regex: "NVIDIA\\sBroadcast"}
 
   # === 5 ===
   - commands: ["move --workspace 5", "focus --workspace 5"]
