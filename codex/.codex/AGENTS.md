@@ -116,19 +116,19 @@ uvx ruff check .  # Check without modifying
 
 Standard Python project structure from `uv init`:
 
-```
-project/
-├── .venv/              # Virtual environment (git-ignored)
-├── .python-version     # Python version (e.g., 3.11)
-├── pyproject.toml      # Project config & dependencies
-├── .gitignore         # Git ignore file
-├── README.md          # Documentation
-└── src/ or *.py or <module_name>/      # Source code
+```yaml
+project/:
+  - .venv/                          # Virtual environment (git-ignored)
+  - .python-version                 # Python version (e.g., 3.11)
+  - pyproject.toml                  # Project config & dependencies
+  - .gitignore                      # Git ignore file
+  - README.md                       # Documentation
+  - src/ or *.py or <module_name>/  # Source code
 ```
 
 ## Forbidden Commands and Patterns
 
-❌ **NEVER suggest:**
+**NEVER suggest:**
 
 - `pip install`
 - `python -m pip`
@@ -139,7 +139,7 @@ project/
 - `uv pip install -r requirements.txt`
 - Manual virtual environment creation with `uv venv` (`uv init` for new projects only; else `uv sync`)
 
-✅ **ALWAYS use:**
+**ALWAYS use:**
 
 - `uv init` (for new projects)
 - `uv add <package>` (for dependencies)

@@ -1,1 +1,3 @@
-glazewm/.glzr/glazewm/*.log
+*.log
+
+glazewm/zebar/.marketplace

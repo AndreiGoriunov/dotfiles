@@ -1,17 +1,12 @@
-#
-# Browser hotkeys:
-# - alt+shift+b focuses or launches the browser in GLAZEWM_BROWSER.
-# - Set GLAZEWM_BROWSER to "chrome" or "brave"; unset defaults to "chrome".
-# - Optional overrides: GLAZEWM_BROWSER_PROCESS and GLAZEWM_BROWSER_PATH.
-#
 general:
   # Commands to run when the WM has started. This is useful for running a
   # script or launching another application.
+  # Example: The below command launches Zebar.
   startup_commands:
     [
       "shell-exec zebar",
-      'shell-exec %USERPROFILE%/apps/tacky-borders/tacky-borders.exe',
-      "focus --workspace 1",
+      'shell-exec C:\Users\SH319HA\.programs\tacky-borders\tacky-borders.exe',
+      "focus --workspace Teams",
     ]
 
   # Commands to run just before the WM is shutdown.
@@ -25,7 +20,7 @@ general:
   # Commands to run after the WM config is reloaded.
   config_reload_commands: []
 
-  # Whether to automatically focus windows underneath the cursor.
+  # Whether to automaFtically focus windows underneath the cursor.
   focus_follows_cursor: false
 
   # Whether to switch back and forth between the previously focused
@@ -58,14 +53,14 @@ gaps:
   scale_with_dpi: true
 
   # Gap between adjacent windows.
-  inner_gap: "15px"
+  inner_gap: "5px"
 
   # Gap between windows and the screen edge.
   outer_gap:
-    top: "55px"
-    right: "15px"
-    bottom: "15px"
-    left: "15px"
+    top: "45px"
+    right: "5px"
+    bottom: "5px"
+    left: "5px"
 
 window_effects:
   # Visual effects to apply to the focused window.
@@ -73,8 +68,8 @@ window_effects:
     # Highlight the window with a colored border.
     # ** Exclusive to Windows 11 due to API limitations.
     border:
-      enabled: true
-      color: "#ffc2e4" # 9783c8 ffc2e4
+      enabled: false
+      color: "#d374f7" #'#8dbcff'
 
     # Remove the title bar from the window's frame. Note that this can
     # cause rendering issues for some applications.
@@ -134,29 +129,23 @@ window_behavior:
       shown_on_top: false
 
 workspaces:
-  - name: "1"
-    bind_to_monitor: 0
-    keep_alive: true
-  - name: "2"
-    bind_to_monitor: 0
-  - name: "3"
-    bind_to_monitor: 0
+  - name: "Teams"
+  - name: "Browser"
+  - name: "IDE"
   - name: "4"
     bind_to_monitor: 1
-    keep_alive: true
   - name: "5"
+    bind_to_monitor: 2
   - name: "6"
   - name: "7"
   - name: "8"
   - name: "9"
-  - name: "10"
 
 window_rules:
   - commands: ["ignore"]
     match:
       # Ignores any Zebar windows.
       - window_process: { equals: "zebar" }
-      - window_process: { equals: "tacky-borders" }
       - window_class: { regex: "tacky-borders" }
 
       # Ignores picture-in-picture windows for browsers.
@@ -170,7 +159,7 @@ window_rules:
         window_title: { regex: ".*? - Peek" }
       - window_process: { equals: "Lively" }
         window_class: { regex: "HwndWrapper" }
-      - window_title: { regex: ".*Palette.*|Command Palette" }
+      - window_title: { regex: ".*Palette.*" }
       - window_process: { equals: "mstsc" } # Ignore remote app
       - window_title: { regex: ".*Windows 11 - Desktop.*" }
         window_process: { equals: "Citrix.DesktopViewer.App.exe" }
@@ -179,59 +168,38 @@ window_rules:
       - window_title: { equals: "Sticky Notes" }
       - window_process: { equals: "OUTLOOK" }
         window_title: { regex: '\d+ Reminder\(s\)' }
-      # - window_title: { regex: ".* - VLC media player" }
-
-  - commands: ["set-floating"]
-    match:
-      - window_process: { regex: "RazerAppEngine" }
-        window_class: { regex: "Chrome_WidgetWin_1" }
-      - window_title: { regex: Systray-left }
-        window_process: { regex: "RazerAppEngine" }
-      - window_title: { regex: "Window Spy" }
-      - window_title: { regex: "Minecraft Launcher" }
-      - window_title: { equals: "Run" }
-      - window_process: { equals: "explorer" }
-      - window_title: { equals: "Task Manager" }
-        window_process: { equals: "Taskmgr" }
-      - window_title: { equals: "EY Object Spy" }
-      - window_title: { equals: "Reus Auto" }
 
   # === 1 ===
-  - commands: ["move --workspace 1", "focus --workspace 1"]
+  - commands: ["move --workspace Teams", "focus --workspace Teams"]
     match:
       - window_title: { regex: ".*[mM]icrosoft [tT]eams.*" }
       - window_process: { equals: "ms-teams" }
 
   # === 2 ===
-  - commands: ["move --workspace 2", "focus --workspace 2"]
+  - commands: ["move --workspace Browser", "focus --workspace Browser"]
     match:
-      - window_process: { regex: "msedge|brave|chrome|thorium|firefox" }
+      - window_process: { equals: "chrome" }
+      - window_process: { equals: "firefox" }
+      - window_process: { equals: "msedge" }
+      - window_process: { equals: "thorium" }
 
   # === 3 ===
-  - commands: ["move --workspace 3", "focus --workspace 3"]
+  - commands: ["move --workspace IDE", "focus --workspace IDE"]
     match:
       - window_process: { equals: "code" }
-      - window_title: { regex: "Visual Studio Code" }
       - window_process: { equals: "idea64" }
       - window_process: { equals: "pycharm64" }
-
-  # === 4 ===
-  - commands: ["move --workspace 4"]
-    match:
-      - window_process: { regex: "SD WebUI" }
-      - window_process: { regex: "Discord" }
-      - window_process: { regex: "NVIDIA\\sBroadcast"}
 
   # === 5 ===
   - commands: ["move --workspace 5", "focus --workspace 5"]
     match:
       - window_process: { equals: "OUTLOOK" }
+      - window_title: { equals: "Microsoft 365 Copilot" }
 
   # === 6 ===
   - commands: ["move --workspace 6", "focus --workspace 6"]
     match:
       - window_process: { equals: "Zoom" }
-      - window_title: { equals: "Microsoft 365 Copilot" }
 
   # === 9 ===
   - commands: ["move --workspace 9"]
@@ -239,26 +207,14 @@ window_rules:
       - window_title: { equals: "Windows App" }
       - window_title: { equals: "PRD-AMER-DEV-QA" }
 
+  - commands: ["set-floating"]
+    match:
+      - window_title: { equals: "EY Object Spy" }
+      - window_process: { equals: "Taskmgr" }
+
   - commands: ["set-tiling"]
     match:
       - window_title: { equals: "PRD-AMER-DEV-QA" }
-      - window_title: { equals: "Microsoft 365 Copilot" }
-
-binding_modes:
-  # When enabled, the focused window can be resized via arrow keys or HJKL.
-  # - name: "resize"
-  #   keybindings:
-  #     - commands: ["resize --width -2%"]
-  #       bindings: ["h", "left"]
-  #     - commands: ["resize --width +2%"]
-  #       bindings: ["l", "right"]
-  #     - commands: ["resize --height +2%"]
-  #       bindings: ["k", "up"]
-  #     - commands: ["resize --height -2%"]
-  #       bindings: ["j", "down"]
-  #     # Press enter/escape to return to default keybindings.
-  #     - commands: ["wm-disable-binding-mode --name resize"]
-  #       bindings: ["escape", "enter"]
 
 keybindings:
   # Shift focus in a given direction.
@@ -275,12 +231,12 @@ keybindings:
   - commands: ["move --direction left"]
     bindings: [
         "alt+shift+h",
-        # "alt+shift+left"
+        # 'alt+shift+left'
       ]
   - commands: ["move --direction right"]
     bindings: [
         "alt+shift+l",
-        # "alt+shift+right"
+        # 'alt+shift+right'
       ]
   - commands: ["move --direction up"]
     bindings: [
@@ -298,20 +254,10 @@ keybindings:
     bindings: ["alt+u"]
   - commands: ["resize --width +2%"]
     bindings: ["alt+p"]
-  # - commands: ["resize --height +2%"]
-  #   bindings: ["alt+o"]
-  # - commands: ["resize --height -2%"]
-  #   bindings: ["alt+i"]
-
-  # As an alternative to the resize keybindings above, resize mode enables
-  # resizing via arrow keys or HJKL. The binding mode is defined above with
-  # the name 'resize'.
-  # - commands: ["wm-enable-binding-mode --name resize"]
-  #   bindings: ["alt+r"]
-
-  # Open Terminal
-  # - commands: ["shell-exec wt"]
-  #   bindings: ["alt+x"]
+  - commands: ["resize --height +2%"]
+    bindings: ["alt+o"]
+  - commands: ["resize --height -2%"]
+    bindings: ["alt+i"]
 
   # Disables window management and all other keybindings until alt+shift+p
   # is pressed again.
@@ -320,16 +266,8 @@ keybindings:
 
   # Change tiling direction. This determines where new tiling windows will
   # be inserted.
-  # - commands: ["toggle-tiling-direction"]
-  #   bindings: ["alt+v"]
-
-  # Change focus from tiling windows -> floating -> fullscreen.
-  # - commands: ['wm-cycle-focus']
-  #   bindings: ['alt+space']
-
-  # Change the focused window to be floating.
-  # - commands: ["toggle-floating --centered"]
-  #   bindings: ["alt+shift+space"]
+  # - commands: ['toggle-tiling-direction']
+  #   bindings: ['alt+v']
 
   # Change the focused window to be tiling.
   - commands: ["toggle-tiling"]
@@ -359,35 +297,28 @@ keybindings:
   - commands: ["wm-redraw"]
     bindings: ["alt+shift+w"]
 
-  # Focus the configured browser, or launch it when no window is open.
-  - commands:
-      [
-        'shell-exec powershell -windowstyle hidden -command "$browser = if ($env:GLAZEWM_BROWSER) { $env:GLAZEWM_BROWSER.ToLowerInvariant() } else { \"chrome\" }; $browserMap = @{ chrome = @{ Process = \"chrome\"; Path = \"C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe\" }; brave = @{ Process = \"brave\"; Path = \"C:\\Program Files\\BraveSoftware\\Brave-Browser\\Application\\brave.exe\" } }; $config = if ($browserMap.ContainsKey($browser)) { $browserMap[$browser] } else { $browserMap.chrome }; $processName = if ($env:GLAZEWM_BROWSER_PROCESS) { $env:GLAZEWM_BROWSER_PROCESS } else { $config.Process }; $browserPath = if ($env:GLAZEWM_BROWSER_PATH) { $env:GLAZEWM_BROWSER_PATH } else { $config.Path }; $browserProcess = Get-Process -Name $processName -ErrorAction SilentlyContinue | Where-Object { $_.MainWindowHandle -ne 0 } | Select-Object -First 1; if ($browserProcess) { (New-Object -ComObject wscript.shell).AppActivate($browserProcess.Id) } else { Start-Process $browserPath }"',
-      ]
-    bindings: ["alt+shift+b"]
-
   # Launch CMD terminal. Alternatively, use `shell-exec wt` or
   # `shell-exec %ProgramFiles%/Git/git-bash.exe` to start Windows
   # Terminal and Git Bash respectively.
-  # - commands: ['shell-exec pwsh']
-  #   bindings: ['alt+enter']
+  - commands: ["shell-exec wt"]
+    bindings: ["alt+x"]
 
-  # Focus the next/previous active workspace defined in `workspaces` config.
-  # - commands: ["focus --next-active-workspace"]
-  #   bindings: ["alt+s"]
-  # - commands: ["focus --prev-active-workspace"]
-  #   bindings: ["alt+a"]
+  - commands:
+      ['shell-exec C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe']
+    bindings: ["alt+b"]
 
-  # Focus the workspace that last had focus.
-  # - commands: ["focus --recent-workspace"]
-  #   bindings: ["alt+d"]
+  - commands:
+      [
+        'shell-exec powershell -windowstyle hidden -command "$chromeProcess = Get-Process -Name chrome -ErrorAction SilentlyContinue | Where-Object { $_.MainWindowHandle -ne 0 }; if ($chromeProcess) { (New-Object -ComObject wscript.shell).AppActivate($chromeProcess.Id) } else { Start-Process \\"C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe\\" }"',
+      ]
+    bindings: ["alt+shift+b"]
 
   # Change focus to a workspace defined in `workspaces` config.
-  - commands: ["focus --workspace 1"]
+  - commands: ["focus --workspace Teams"]
     bindings: ["alt+1"]
-  - commands: ["focus --workspace 2"]
+  - commands: ["focus --workspace Browser"]
     bindings: ["alt+2"]
-  - commands: ["focus --workspace 3"]
+  - commands: ["focus --workspace IDE"]
     bindings: ["alt+3"]
   - commands: ["focus --workspace 4"]
     bindings: ["alt+4"]
@@ -401,8 +332,6 @@ keybindings:
     bindings: ["alt+8"]
   - commands: ["focus --workspace 9"]
     bindings: ["alt+9"]
-  - commands: ["focus --workspace 10"]
-    bindings: ["alt+0"]
 
   # Move the focused window's parent workspace to a monitor in a given
   # direction.
@@ -416,11 +345,11 @@ keybindings:
     bindings: ["alt+shift+s"]
 
   # Move focused window to a workspace defined in `workspaces` config.
-  - commands: ["move --workspace 1", "focus --workspace 1"]
+  - commands: ["move --workspace Teams", "focus --workspace Teams"]
     bindings: ["alt+shift+1"]
-  - commands: ["move --workspace 2", "focus --workspace 2"]
+  - commands: ["move --workspace Browser", "focus --workspace Browser"]
     bindings: ["alt+shift+2"]
-  - commands: ["move --workspace 3", "focus --workspace 3"]
+  - commands: ["move --workspace IDE", "focus --workspace IDE"]
     bindings: ["alt+shift+3"]
   - commands: ["move --workspace 4", "focus --workspace 4"]
     bindings: ["alt+shift+4"]
@@ -434,5 +363,3 @@ keybindings:
     bindings: ["alt+shift+8"]
   - commands: ["move --workspace 9", "focus --workspace 9"]
     bindings: ["alt+shift+9"]
-  - commands: ["move --workspace 10", "focus --workspace 10"]
-    bindings: ["alt+shift+0"]
