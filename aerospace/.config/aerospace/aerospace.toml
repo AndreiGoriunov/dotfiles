@@ -199,6 +199,7 @@ alt-shift-p = 'enable toggle'
 # backspace = ['close-all-windows-but-current', 'mode main']
 
 # Move application to specific workspace
+# To get app id:
 # osascript -e 'id of app "name"'
 [[on-window-detected]]
 if.app-id = "com.apple.Safari"
