@@ -199,6 +199,7 @@ alt-shift-p = 'enable toggle'
 # backspace = ['close-all-windows-but-current', 'mode main']
 
 # Move application to specific workspace
+# osascript -e 'id of app "name"'
 [[on-window-detected]]
 if.app-id = "com.apple.Safari"
 run = ['move-node-to-workspace 2', 'workspace 2']
@@ -210,3 +211,7 @@ run = ['move-node-to-workspace 2', 'workspace 2']
 [[on-window-detected]]
 if.app-id = "com.microsoft.VSCode"
 run = ['move-node-to-workspace 4', 'workspace 4']
+
+[[on-window-detected]]
+if.app-id = "com.apple.dt.Xcode"
+run = ['move-node-to-workspace 3', 'workspace 3']
