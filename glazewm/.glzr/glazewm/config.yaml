@@ -104,6 +104,7 @@ window_effects:
       enabled: false
     corner_style:
       enabled: false
+      # Allowed values: 'square', 'rounded', 'small_rounded'.
       style: "square"
     transparency:
       enabled: false
