@@ -20,8 +20,18 @@ needed. Create the environment here instead of copying one from another location
 The GlazeWM config starts `.venv/Scripts/pythonw.exe` and runs
 `stop_autotile.ps1` on shutdown through `%USERPROFILE%/.glzr/autotile`, which
 Stow links to this directory. The stop helper derives its paths from its own
-location. Restart GlazeWM after setup; reloading its config does not run startup
+location and matches both the venv launcher and its base-Python child by the
+exact script path, resolving Stow links. The shutdown command uses a per-process
+execution-policy bypass so Windows PowerShell can run the helper without changing
+the system policy. Restart GlazeWM after setup; reloading its config does not run startup
 commands. Shutdown forcibly stops AutoTile, so unsaved statistics may be lost.
+
+Preview or run the shutdown helper from the dotfiles repo root:
+
+```powershell
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\glazewm\.glzr\autotile\stop_autotile.ps1 -WhatIf
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\glazewm\.glzr\autotile\stop_autotile.ps1
+```
 
 ## Run manually or test
 
@@ -33,6 +43,7 @@ uv --directory .\glazewm\.glzr\autotile\ run --locked python glaze_autotile.py
 
 # Run the focused tests without starting AutoTile.
 uv --directory .\glazewm\.glzr\autotile\ run --locked python -m pytest
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\glazewm\.glzr\autotile\test_stop_autotile.ps1
 ```
 
 [`--directory`](https://docs.astral.sh/uv/reference/cli/#uv--directory) changes

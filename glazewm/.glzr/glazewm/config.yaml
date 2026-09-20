@@ -10,7 +10,7 @@ general:
   startup_commands:
     [
       "shell-exec zebar",
-      'shell-exec "%USERPROFILE%/.glzr/autotile/.venv/Scripts/pythonw.exe" "%USERPROFILE%/.glzr/autotile/glaze_autotile.py"',
+      'shell-exec %USERPROFILE%/.glzr/autotile/.venv/Scripts/pythonw.exe "%USERPROFILE%/.glzr/autotile/glaze_autotile.py"',
       'shell-exec %USERPROFILE%/apps/tacky-borders/tacky-borders.exe',
       "focus --workspace 1",
     ]
@@ -21,7 +21,7 @@ general:
     [
       "shell-exec taskkill /IM zebar.exe /F",
       "shell-exec taskkill /IM tacky-borders.exe /F",
-      'shell-exec --hide-window powershell.exe -NoProfile -WindowStyle Hidden -File "%USERPROFILE%/.glzr/autotile/stop_autotile.ps1"',
+      'shell-exec --hide-window powershell.exe -NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -File "%USERPROFILE%/.glzr/autotile/stop_autotile.ps1"',
     ]
 
   # Commands to run after the WM config is reloaded.
