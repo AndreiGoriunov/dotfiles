@@ -21,3 +21,8 @@ This is a personal dotfiles repo managed with GNU Stow.
 - Keep documentation concise and command-focused.
 - Do not add secrets, machine-local paths, logs, or generated cache files.
 - Preserve existing package names unless the user asks for a repo layout change.
+
+## Commit messages
+
+Use Conventional Commits for every commit: `<type>(optional-scope): <imperative summary>`.
+Use a relevant type such as `fix`, `feat`, `docs`, `test`, or `chore`.
