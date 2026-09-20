@@ -196,6 +196,8 @@ window_rules:
         window_process: { equals: "Taskmgr" }
       - window_title: { equals: "EY Object Spy" }
       - window_title: { equals: "Reus Auto" }
+      - window_process: { equals: "steamwebhelper"}
+        window_title: { regex: "(Список друзей|Friend List)"}
 
   # === 1 ===
   - commands: ["move --workspace 1", "focus --workspace 1"]
