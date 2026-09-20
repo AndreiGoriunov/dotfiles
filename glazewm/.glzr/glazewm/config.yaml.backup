@@ -10,7 +10,6 @@ general:
   startup_commands:
     [
       "shell-exec zebar",
-      'shell-exec "%USERPROFILE%/.glzr/autotile/.venv/Scripts/pythonw.exe" "%USERPROFILE%/.glzr/autotile/glaze_autotile.py"',
       'shell-exec %USERPROFILE%/apps/tacky-borders/tacky-borders.exe',
       "focus --workspace 1",
     ]
@@ -21,7 +20,6 @@ general:
     [
       "shell-exec taskkill /IM zebar.exe /F",
       "shell-exec taskkill /IM tacky-borders.exe /F",
-      'shell-exec --hide-window powershell.exe -NoProfile -WindowStyle Hidden -File "%USERPROFILE%/.glzr/autotile/stop_autotile.ps1"',
     ]
 
   # Commands to run after the WM config is reloaded.
@@ -54,9 +52,6 @@ general:
   # - 'true': Show all windows (regardless of workspace).
   # - 'false': Only show windows from the currently shown workspaces.
   show_all_in_taskbar: false
-
-ipc:
-  enabled: true
 
 gaps:
   # Whether to scale the gaps with the DPI of the monitor.
