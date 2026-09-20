@@ -91,6 +91,8 @@ stow --target "$HOME" -D aerospace
 .\stow-win.ps1 --target "$HOME" -D glazewm
 ```
 
+For AutoTile setup and commands, see [its README](glazewm/.glzr/autotile/README.md).
+
 ## GlazeWM Profiles
 
 Keep GlazeWM configs in one package under `.glzr/glazewm/`, such as:
