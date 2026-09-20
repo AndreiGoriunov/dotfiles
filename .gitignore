@@ -2,7 +2,7 @@
 
 glazewm/zebar/.marketplace
 
-glazewm/.glzr/autotile/.venv/
-glazewm/.glzr/autotile/__pycache__/
-glazewm/.glzr/autotile/.pytest_cache/
+glazewm/.glzr/autotile/.venv
+glazewm/.glzr/autotile/__pycache__
+glazewm/.glzr/autotile/.pytest_cache
 glazewm/.glzr/autotile/auto_tiler_stats.json
