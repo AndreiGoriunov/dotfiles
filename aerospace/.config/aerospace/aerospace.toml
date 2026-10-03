@@ -181,6 +181,15 @@ alt-shift-8 = ['move-node-to-workspace 8', 'workspace 8']
 alt-shift-9 = ['move-node-to-workspace 9', 'workspace 9']
 alt-shift-0 = ['move-node-to-workspace 10', 'workspace 10']
 
+# alt-shift-a = 'move-node-to-monitor --focus-follows-window left'
+# alt-shift-s = 'move-node-to-monitor --focus-follows-window down'
+# alt-shift-d = 'move-node-to-monitor --focus-follows-window up'
+# alt-shift-f = 'move-node-to-monitor --focus-follows-window right'
+
+alt-shift-a = 'move-workspace-to-monitor left'
+alt-shift-s = 'move-workspace-to-monitor down'
+alt-shift-d = 'move-workspace-to-monitor up'
+alt-shift-f = 'move-workspace-to-monitor right'
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#workspace-back-and-forth
 # alt-tab = 'workspace-back-and-forth'
@@ -192,7 +201,7 @@ alt-shift-0 = ['move-node-to-workspace 10', 'workspace 10']
 
 # Service
 alt-shift-r = 'reload-config'
-alt-shift-f = 'flatten-workspace-tree'              # reset layout
+# alt-shift-f = 'flatten-workspace-tree'              # reset layout
 alt-t = 'layout floating tiling'                    # Toggle between floating and tiling layout
 alt-shift-p = 'enable toggle'
 # alt-shift-s = 'exec-and-forget screencapture -i -c'
