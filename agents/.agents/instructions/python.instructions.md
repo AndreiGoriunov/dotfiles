@@ -1,177 +1,59 @@
 ---
-description: Python project setup and dependency management using uv
-applyTo: "**"
+description: Python conventions, tooling, and dependency management with uv
+applyTo: "**/*.py,**/pyproject.toml,**/uv.lock"
 ---
 
-# Python Project Guidelines
+# Python project guidelines
 
-## Package Manager: uv Only
+## Setup
 
-Use `uv` for Python projects. Do not suggest another package manager unless
-the user explicitly requests it.
+- For new projects, target Python 3.12+ with `requires-python = ">=3.12"`. Preserve existing Python constraints unless asked to change them.
+- Initialize packaged applications with `uv init --package --python 3.12`; use `--lib` for libraries or `--no-package` for simple un-packaged applications.
+- Use `src/<package>/` for packaged code and `tests/` for tests. Preserve existing layouts.
 
-Guide: [uv Features](https://docs.astral.sh/uv/getting-started/features/)
+## Dependencies and execution
 
-## New Project Setup
+- Manage dependencies with `uv add`, `uv add --dev`, and `uv remove`. Commit `pyproject.toml` and `uv.lock`.
+- Use `uv sync` to manage the project environment and `uv run` for project commands.
+- Use `uvx` only for standalone tools that do not need project dependencies.
+- Do not use pip, pipenv, poetry, conda, requirements.txt, or manually created virtual environments.
 
-Start new projects with `uv init`. Prefer Python `>=3.11, <3.12` unless the
-user requests otherwise:
+## Tooling
 
-```bash
-uv init --python 3.11
-```
+- Required development dependencies: pytest, pytest-cov, ruff, mypy.
+- Optional development dependency: commitizen for version bumping. Configure `version_provider = "uv"` under `[tool.commitizen]` in `pyproject.toml`.
+- Configure tools in `pyproject.toml`. Enable Ruff import-sorting rules (`I`).
+- Format with `uv run ruff format .`.
+- Verify changes with `uv run ruff check .`, `uv run mypy .`, and relevant `uv run pytest` tests. Report checks not run.
 
-Set `requires-python = ">=3.11, <3.12"` in `pyproject.toml` for this default.
-Preserve an existing project's Python constraints.
+## Application libraries
 
-Initialization creates:
+- Use Dynaconf for application configuration, PySide6 for desktop GUIs, and FastAPI with Uvicorn for APIs. Add dependencies only when relevant.
+- Dynaconf supports named configuration environments via `environments=True`; enable only when needed.
+- Load secrets from environment variables or git-ignored local secret files. Never commit secrets.
 
-- `pyproject.toml` - Project configuration and dependencies
-- `.python-version` - Python version specification
-- Basic project structure
+## Code
 
-Then add dependencies with `uv add <package>`.
+- Annotate function parameters, return values, and class attributes. Annotate local variables when inference is insufficient.
+- Use built-in generics and `X | None`. Avoid `Any` unless required by dynamic behavior.
+- Follow PEP 8 and project Ruff configuration.
+- Keep functions focused; document public APIs and non-obvious behavior.
 
-## Dependency Management
+## Dependencies and CI
 
-Manage dependencies in `pyproject.toml` using uv. Do not create or use
-`requirements.txt`. Commit `uv.lock` to preserve resolved dependencies.
+- Declare directly used third-party dependencies; do not rely on transitive dependencies. Prefer the standard library when sufficient.
+- Separate runtime dependencies, development dependency groups, and optional runtime extras.
+- In CI, use `uv sync --locked` and `uv run --locked` for checks. Include `ruff format --check`.
 
-```bash
-# Add dependencies
-uv add <package>
-uv add --dev <package>
+## Design and reliability
 
-# Add a specific version
-uv add "package==1.2.3"
+- Keep business logic independent of GUI, API, and CLI entry points. Avoid abstractions for hypothetical requirements.
+- Use async only when beneficial; keep blocking work off event loops and GUI threads.
+- Catch specific exceptions, preserve diagnostic context, and never silently swallow unexpected failures.
+- Use logging for diagnostics; exclude secrets and sensitive data.
+- Avoid reliance on the working directory. Use `pathlib` for paths and `importlib.resources` for packaged assets; keep mutable data outside the installed package.
 
-# Remove dependencies
-uv remove <package>
+## Testing
 
-# Sync the project environment
-uv sync
-```
-
-## Settings and Secrets: Dynaconf Preferred
-
-Prefer `dynaconf` for application settings and secrets management.
-
-```bash
-uv add dynaconf
-uv run dynaconf init
-```
-
-Creates layered configuration boilerplate:
-
-- `settings.toml` - Default settings
-- `.secrets.toml` - Local secrets; ensure this file is git-ignored
-- `config.py` - Settings loader
-
-Example:
-
-```python
-from config import settings
-
-print(settings.SOME_SETTING)
-```
-
-Guidelines:
-
-- Use Dynaconf for environment-based configuration (`dev`/`test`/`prod`).
-- Keep secrets out of source code. Load them through environment variables or local secret files.
-- Layer defaults, environment-specific overrides, and local secrets.
-- Avoid ad-hoc configuration parsing when Dynaconf fits.
-
-## Running Tools and Scripts
-
-Use `uv run` for scripts and tools that need project dependencies:
-
-```bash
-uv run script.py
-uv run streamlit run app.py
-
-# Add project development tools, then run them
-uv add --dev pytest mypy
-uv run pytest
-uv run mypy .
-```
-
-Use `uvx <tool>` for standalone tools. Its isolated environment does not
-include the project's dependencies.
-
-## Code Formatting
-
-Prefer Ruff for formatting and linting:
-
-```bash
-uvx ruff format .
-uvx ruff check .  # Check without modifying
-```
-
-If Ruff is already declared as a project dependency, use `uv run ruff format .`
-and `uv run ruff check .` to use the project's version.
-
-## Project Structure
-
-Print directory trees as nested Markdown bullet lists using ASCII characters.
-A typical project after initialization and dependency synchronization:
-
-- `project/`
-  - `.venv/` - Virtual environment (created by sync/run; git-ignored)
-  - `.python-version` - Python version specification
-  - `pyproject.toml` - Project configuration and dependencies
-  - `uv.lock` - Resolved dependencies
-  - `.gitignore` - Git ignore rules
-  - `README.md` - Documentation
-  - `main.py` - Default application entry point
-
-Packaged projects initialized with `uv init --package` use a source layout:
-
-- `project/`
-  - `src/`
-    - `<module_name>/`
-      - `__init__.py` - Package source
-
-## Forbidden Commands and Patterns
-
-Unless explicitly requested by the user, do not suggest:
-
-- `pip install` or `python -m pip`
-- `pipenv`, `poetry`, or `conda`
-- Creating or using `requirements.txt`, including `uv pip install -r requirements.txt`
-- Manual virtual environment creation with `uv venv`; use `uv init` for new projects and `uv sync` for existing projects
-
-## Code Style
-
-- Strongly prefer type hints where appropriate.
-- Follow PEP 8; format and lint with Ruff.
-- Write docstrings for functions and classes.
-- Keep functions focused and modular.
-- Run `uvx ruff format .` before committing, or `uv run ruff format .` when Ruff is a project dependency.
-
-## Troubleshooting
-
-### uv Command Not Found
-
-Check the OS and use the appropriate installation command:
-
-- Windows: `winget install --id=astral-sh.uv -e`
-- macOS with Homebrew: `brew install uv`
-
-After installation, open a new terminal and verify `uv --version`. If an
-integrated terminal still cannot find uv, restart its host application to
-refresh PATH.
-
-### SSL or Corporate Certificate Errors
-
-For certificate errors during Python or dependency installation, configure the
-trusted corporate CA using uv's [certificate guidance](https://docs.astral.sh/uv/concepts/authentication/certificates/).
-
-If a temporary bypass is explicitly needed, scope it to the failing host:
-
-```bash
-uv sync --allow-insecure-host <host>
-```
-
-This disables certificate verification for that host. Do not make it the
-default or apply it to unrelated hosts.
+- Keep unit tests deterministic and independent of external services. Mock external boundaries rather than implementation details.
+- Add regression tests for bug fixes where practical; separate integration tests when useful.

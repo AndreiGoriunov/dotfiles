@@ -1,6 +1,5 @@
 ---
 description: Windows 11 and PowerShell 7+ defaults for shell commands, paths, and examples, with portable formatting conventions.
-applyTo: "**"
 ---
 
 # Windows Development Environment
