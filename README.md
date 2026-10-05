@@ -73,7 +73,30 @@ On PowerShell, use:
 
 ```powershell
 Get-Item "$HOME/.zshrc"
-Get-Item "$HOME\.glzr" | Format-List FullName,LinkType,Target
+Get-Item "$HOME/.glzr" | Format-List FullName,LinkType,Target
+```
+
+### Windows (`stow-win.ps1`)
+
+`stow-win.ps1` links each top-level item in a package directly into the target:
+directories become junctions and files become symlinks. Dry-run the packages
+to check them:
+
+```powershell
+.\stow-win.ps1 --simulate --verbose --target "$HOME" agents glazewm
+```
+
+- `Skipping ... as it already points to ...` means the link is already correct.
+- `LINK: ...` means the link is missing and would be created.
+- `CONFLICT: ...` means a real file/folder or a different link is in the way.
+  When there are conflicts, only those are printed and the exit code is `1`.
+
+List all links in `$HOME` that point into this repo (run from the repo root):
+
+```powershell
+Get-ChildItem -Force $HOME |
+  Where-Object { $_.LinkType -and "$($_.Target)" -like "$PWD*" } |
+  Format-Table Name, LinkType, Target -AutoSize
 ```
 
 ## Unlink
